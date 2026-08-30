@@ -1,10 +1,6 @@
 # Heart Disease MLOps
 
-Proyecto Integrador de Aprendizaje Automático — sección **10.12** del curso de
-Machine Learning (Prof. Lihki Rubio, Universidad del Norte). Pipeline completo
-de clasificación de riesgo cardíaco: desde el notebook de entrenamiento hasta
-una API en producción, containerizada, desplegable en Kubernetes, con
-integración continua y monitoreo de data drift.
+
 
 **Dataset**: [Heart Failure Prediction](https://www.kaggle.com/datasets/fedesoriano/heart-failure-prediction)
 (Kaggle, `fedesoriano`) — 918 pacientes, 11 variables clínicas, variable

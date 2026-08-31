@@ -61,14 +61,13 @@ jupyter lab notebooks/
   entre los 5 candidatos por AUC de validación cruzada, evaluación (matriz de
   confusión, curva ROC, AUC) y exportación a `app/model.joblib`.
 
-**Resultado real de esta corrida**: `RandomForestClassifier` gana la
+**Resultado real**: `RandomForestClassifier` gana la
 selección (`max_depth=10`, `n_estimators=100`) con AUC de validación cruzada
 ≈ **0.924** y AUC en test ≈ **0.932**. Si vuelves a ejecutar los notebooks
 (sobre todo si cambias `random_state` o los datos), estos números pueden
 variar ligeramente.
 
-> **Importante**: `app/model.joblib` debe ejecutarse (Notebook 2) *antes* de
-> levantar la API o correr los tests -- ambos lo cargan directamente.
+
 
 ## 3. Etapa 3 — API local
 
@@ -133,27 +132,4 @@ Compara una partición "reference" (datos de entrenamiento) contra una
 partición "current" simulada -- en producción, "current" vendría de las
 peticiones reales que recibe la API.
 
-## Notas de implementación
 
-Algunos ajustes hechos sobre el enunciado original, documentados aquí por
-transparencia:
-
-- El `README.md` que trae la página del curso en 10.12.12 describe un
-  proyecto distinto (Data Lake con MinIO/Spark/Prophet/Streamlit/Airflow);
-  este archivo lo reemplaza por uno específico de este proyecto.
-- `model.joblib` vive en `app/` (no en la raíz): es lo que usan tanto el
-  código de ejemplo de `joblib.dump(...)` como `app/api.py`, y es necesario
-  para que `docker/Dockerfile` (que solo copia `app/`) lo incluya en la imagen.
-  El `Pipeline` completo se serializa (no solo el modelo), para que la API
-  reciba variables sin transformar.
-- `docker/requirements.txt` agrega `pandas` y `numpy` (no listados en el
-  enunciado): `app/api.py` los necesita para construir el `DataFrame` de
-  entrada del pipeline.
-- Se agregaron `tests/`, `src/`, `monitoring/`, `conftest.py` y `.flake8`,
-  no listados explícitamente en la Etapa 0, porque `ci.yml` (pytest +
-  flake8) y `generate_drift_report.py` los necesitan para funcionar.
-- `RestingBP=0` y `Cholesterol=0` (172 registros, ~19% del dataset) se
-  tratan como valores faltantes (`NaN`), no como mediciones reales -- son
-  fisiológicamente imposibles en un paciente vivo. Tanto el entrenamiento
-  (`src/pipeline_utils.load_data`) como la API (`app/api.py`) aplican esta
-  misma regla, para evitar *train/serve skew*.
